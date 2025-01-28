@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Todoアプリ</title>
+    <style>
+        body {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        .todo-form {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .todo-input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        .todo-button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .todo-button:hover {
+            background-color: #45a049;
+        }
+        .todo-list {
+            list-style: none;
+            padding: 0;
+        }
+        .todo-item {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            background-color: white;
+            margin-bottom: 10px;
+            border-radius: 4px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .todo-text {
+            flex: 1;
+            margin: 0 10px;
+        }
+        .completed {
+            text-decoration: line-through;
+            color: #888;
+        }
+        .delete-button {
+            background-color: #f44336;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .delete-button:hover {
+            background-color: #da190b;
+        }
+    </style>
+</head>
+<body>
+    <h1>Todoリスト</h1>
+    
+    <form action="/add" method="POST" class="todo-form">
+        <input type="text" name="todo" placeholder="新しいタスクを入力" required class="todo-input">
+        <button type="submit" class="todo-button">追加</button>
+    </form>
+
+    <ul class="todo-list">
+        <% todos.forEach(todo => { %>
+            <li class="todo-item">
+                <form action="/toggle/<%= todo.id %>" method="POST" style="display: inline;">
+                    <input type="checkbox" 
+                           onChange="this.form.submit()" 
+                           <%= todo.completed ? 'checked' : '' %>>
+                </form>
+                <span class="todo-text <%= todo.completed ? 'completed' : '' %>"><%= todo.text %></span>
+                <form action="/delete/<%= todo.id %>" method="POST" style="display: inline;">
+                    <button type="submit" class="delete-button">削除</button>
+                </form>
+            </li>
+        <% }); %>
+    </ul>
+</body>
+</html>
